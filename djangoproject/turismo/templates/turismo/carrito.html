@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="{% static 'images/OIG2.6.png' %}" alt="Logo Papu's Arcade" style="width: 40px; margin-right: 10px;"> 
+                Papu's Arcade
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/carrito">Carrito</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 pt-5">
+        <h1>Carrito de Compras</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Total</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody id="cartItems">
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-between">
+            <h5>Total: $<span id="cartTotal">0.00</span></h5>
+            <button class="btn btn-primary" id="checkoutBtn">Checkout</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        let cartItems = [
+            { product: 'Minecraft', price: 25.00, quantity: 1 },
+            { product: 'The Binding of Isaac', price: 20.00, quantity: 1 },
+            { product: 'Slime Rancher', price: 15.00, quantity: 1 },
+            { product: 'Sekiro', price: 40.00, quantity: 1 },
+            { product: 'Fortnite', price: 0.00, quantity: 1 },
+            { product: 'Stardew Valley', price: 15.00, quantity: 1 },
+        ];
+        
+        function updateCartUI() {
+            const cartItemsElement = $('#cartItems');
+            cartItemsElement.empty();
+        
+            let totalPrice = 0;
+            cartItems.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                totalPrice += itemTotal;
+        
+                const row = `
+                    <tr>
+                        <td>${item.product}</td>
+                        <td>$${item.price.toFixed(2)}</td>
+                        <td><input type="number" class="form-control" value="${item.quantity}" min="1" data-product="${item.product}"></td>
+                        <td>$${itemTotal.toFixed(2)}</td>
+                        <td><button class="btn btn-danger btn-sm" data-product="${item.product}">Eliminar</button></td>
+                    </tr>
+                `;
+                cartItemsElement.append(row);
+            });
+        
+            $('#cartTotal').text(totalPrice.toFixed(2));
+        }
+        
+        $(document).ready(function() {
+            $('#cartItems').on('change', 'input[type="number"]', function() {
+                const product = $(this).data('product');
+                const quantity = parseInt($(this).val());
+                const item = cartItems.find(item => item.product === product);
+                item.quantity = quantity;
+                updateCartUI();
+            });
+        
+            $('#cartItems').on('click', '.btn-danger', function() {
+                const product = $(this).data('product');
+                cartItems = cartItems.filter(item => item.product !== product);
+                updateCartUI();
+            });
+        
+            $('#checkoutBtn').on('click', function() {
+                alert('¡Gracias por tu compra!');
+            });
+        
+            updateCartUI();
+        });
+    </script>
+</body>
+</html>

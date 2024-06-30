@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+</head>
+<body>
+    <h1>Carrito de Compras</h1>
+    <a href="{% url 'carrito_agregar' %}">Agregar Producto al Carrito</a>
+    <ul>
+        {% for item in carrito_items %}
+            <li>
+                {{ item.cantidad }} x {{ item.producto.nombre }} - ${{ item.producto.precio }}
+                - <a href="{% url 'carrito_editar' item.pk %}">Editar</a>
+                - <a href="{% url 'carrito_eliminar' item.pk %}">Eliminar</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="/">Volver a la tienda</a>
+</body>
+</html>

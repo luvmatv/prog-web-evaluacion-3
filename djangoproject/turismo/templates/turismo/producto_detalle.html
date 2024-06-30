@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Producto</title>
+</head>
+<body>
+    <h1>{{ producto.nombre }}</h1>
+    <p>Precio: ${{ producto.precio }}</p>
+    <p>Descripción: {{ producto.descripcion }}</p>
+    <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
+    <br>
+    <a href="{% url 'producto_lista' %}">Volver a la lista</a>
+</body>
+</html>
